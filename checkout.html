@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Finalizar Pedido</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Finalizar Pedido</h1>
+    <nav>
+      <a href="{{ url_for('ver_carrinho') }}">Voltar ao Carrinho</a>
+    </nav>
+  </header>
+
+  <main class="checkout">
+    {% if itens %}
+      <section class="resumo">
+        <h2>Resumo</h2>
+        <ul>
+          {% for item in itens %}
+            <li>{{ item.qty }} × {{ item.produto.nome }} — R$ {{ '%.2f'|format(item.subtotal) }}</li>
+          {% endfor %}
+        </ul>
+        <h3>Total: R$ {{ '%.2f'|format(total) }}</h3>
+      </section>
+
+      <section class="form">
+        {% with msgs = get_flashed_messages(with_categories=true) %}
+          {% if msgs %}
+            <div class="flash-wrap">
+              {% for cat, m in msgs %}
+                <div class="flash {{ cat }}">{{ m }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" action="{{ url_for('checkout') }}">
+          <label>Nome completo</label>
+          <input type="text" name="nome" required />
+
+          <label>E-mail</label>
+          <input type="email" name="email" required />
+
+          <label>Telefone (WhatsApp)</label>
+          <input type="tel" name="telefone" required />
+
+          <button class="btn" type="submit">Confirmar Pedido</button>
+        </form>
+      </section>
+    {% else %}
+      <p>Seu carrinho está vazio.</p>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>📞 (11) 99999-9999 · 📧 contato@lojasuplementos.com</p>
+  </footer>
+</body>
+</html>

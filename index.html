@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>GreenFit Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>🛒 GreenFit Store</h1>
+    <nav>
+      <a href="{{ url_for('ver_carrinho') }}">Carrinho</a>
+      <a href="{{ url_for('contato') }}">Contato</a>
+    </nav>
+  </header>
+
+  <section class="filtros">
+    <form method="get" action="{{ url_for('index') }}" class="filtro-form">
+      <select name="categoria" onchange="this.form.submit()">
+        <option value="">Todas as categorias</option>
+        {% for c in categorias %}
+          <option value="{{ c }}" {{ 'selected' if c == categoria_sel else '' }}>
+            {{ c|capitalize }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <input type="text" name="q" placeholder="Buscar produtos..." value="{{ q or '' }}" />
+      <button type="submit">Buscar</button>
+      {% if categoria_sel or q %}
+        <a class="limpar" href="{{ url_for('index') }}">Limpar</a>
+      {% endif %}
+    </form>
+  </section>
+
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% if msgs %}
+      <div class="flash-wrap">
+        {% for cat, m in msgs %}
+          <div class="flash {{ cat }}">{{ m }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main class="grid">
+    {% for p in produtos %}
+    <div class="card">
+      <img src="{{ url_for('static', filename='image/' ~ p.imagem) }}" alt="{{ p.nome }}" class="produto-img" />
+      <div class="card-body">
+        <h2>{{ p.nome }}</h2>
+        <p class="descricao">{{ p.descricao }}</p>
+        <span class="preco">R$ {{ '%.2f'|format(p.preco) }}</span>
+        <a class="btn" href="{{ url_for('adicionar', pid=p.id) }}">Adicionar ao Carrinho</a>
+      </div>
+      <div class="badge">{{ p.categoria|capitalize }}</div>
+    </div>
+    {% else %}
+      <p>Nenhum produto encontrado.</p>
+    {% endfor %}
+  </main>
+
+  <footer>
+    <p>📞 (11) 9994-3456 · 📧 contato@greenfitstore.com</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Finalizar Pedido</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h2>Finalizar Pedido</h2>
+
+<form action="/pedido_finalizado" method="post">
+    <label>Nome:</label>
+    <input type="text" name="nome" required><br>
+
+    <label>Endereço:</label>
+    <input type="text" name="endereco" required><br>
+
+    <label>Forma de pagamento:</label>
+    <select name="pagamento" required>
+        <option value="">Selecione</option>
+        <option value="PIX">PIX</option>
+        <option value="Boleto Bancário">Boleto Bancário</option>
+        <option value="Cartão de Crédito">Cartão de Crédito</option>
+        <option value="Cartão de Débito">Cartão de Débito</option>
+    </select><br>
+
+    <button type="submit">Confirmar Pedido</button>
+</form>
+
+<div class="pagamentos">
+    <h3>Formas de Pagamento Aceitas</h3>
+    <img src="{{ url_for('static', filename='imagens/pix.png') }}" alt="PIX" width="50">
+    <img src="{{ url_for('static', filename='imagens/boleto.png') }}" alt="Boleto" width="50">
+    <img src="{{ url_for('static', filename='imagens/cartao_credito.png') }}" alt="Cartão de Crédito" width="50">
+    <img src="{{ url_for('static', filename='imagens/cartao_debito.png') }}" alt="Cartão de Débito" width="50">
+</div>
+
+</body>
+</html>

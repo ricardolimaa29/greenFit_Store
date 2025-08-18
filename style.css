@@ -1,0 +1,68 @@
+bikinicroche* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; margin: 0; background: #f6f7fb; color: #222; }
+a { text-decoration: none; }
+
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #2e7d32; color: #fff; }
+.topbar a { color: #fff; margin-left: 12px; font-weight: bold; }
+footer { text-align: center; padding: 16px; background: #eee; margin-top: 30px; }
+
+.filtros { padding: 12px 20px; }
+.filtro-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.filtro-form input, .filtro-form select, .filtro-form button {
+  padding: 10px; border: 1px solid #ddd; border-radius: 8px;
+}
+.filtro-form .limpar { margin-left: 8px; font-size: 14px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px; padding: 0 20px 20px;
+}
+
+.card { background: #fff; border-radius: 12px; overflow: hidden; position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+.card img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
+.card-body { padding: 12px; }
+.card-body h2 { margin: 0 0 6px; font-size: 18px; }
+.descricao { color: #555; font-size: 14px; min-height: 42px; }
+.preco { display: inline-block; margin: 8px 0; font-weight: bold; }
+.btn { display: inline-block; padding: 10px 12px; border-radius: 8px; background: #1976d2; color: #fff; }
+.btn:hover { opacity: .92; }
+.btn.outline { background: transparent; color: #1976d2; border: 1px solid #1976d2; }
+
+.badge { position: absolute; top: 10px; left: 10px; background: #000000b0; color: #fff;
+  padding: 4px 8px; border-radius: 999px; font-size: 12px; }
+
+.tabela { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px;
+  overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,.06); margin: 0 20px; }
+.tabela th, .tabela td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+.tabela th { background: #fafafa; }
+.total { margin: 16px 20px; }
+.acoes-carrinho { margin: 12px 20px; display: flex; gap: 10px; }
+
+.flash-wrap { padding: 0 20px; }
+.flash { padding: 10px 12px; border-radius: 8px; margin: 8px 0; }
+.flash.ok { background: #e6f4ea; color: #1e4620; border: 1px solid #b7e1c1; }
+.flash.erro { background: #fdecea; color: #5f2120; border: 1px solid #f5c6cb; }
+
+.checkout, .pedido, .contato { padding: 0 20px; display: grid; gap: 20px; }
+.checkout { grid-template-columns: 1fr 1fr; }
+.checkout .resumo ul { padding-left: 18px; }
+.checkout .form form { display: grid; gap: 10px; }
+.checkout input { padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+
+@media (max-width: 900px) {
+  .checkout { grid-template-columns: 1fr; }
+}
+.pagamentos {
+    margin-top: 20px;
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.pagamentos img {
+    margin: 5px;
+}
+
