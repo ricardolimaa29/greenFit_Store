@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido Confirmado</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>✅ Pedido Confirmado!</h1>
+  </header>
+
+  <main>
+    <p>Obrigado, <span id="nome"></span>. Seu pedido será enviado para:</p>
+    <p><strong id="endereco"></strong></p>
+    <p>Forma de pagamento: <strong id="pagamento"></strong></p>
+    <a class="btn" href="index.html">Voltar para a loja</a>
+  </main>
+
+  <footer>
+    <p>📞 (11) 99999-9999 · 📧 contato@lojasuplementos.com</p>
+  </footer>
+
+  <script>
+    const pedido = JSON.parse(localStorage.getItem("pedido")) || {};
+    document.getElementById("nome").innerText = pedido.nome || "Cliente";
+    document.getElementById("endereco").innerText = pedido.endereco || "Endereço não informado";
+    document.getElementById("pagamento").innerText = pedido.pagamento || "Não definido";
+    // limpar carrinho depois da confirmação
+    localStorage.removeItem("carrinho");
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Finalizar Pedido</title>
+  <link rel="stylesheet" href="static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Finalizar Pedido</h1>
+    <nav>
+      <a href="carrinho.html">Voltar ao Carrinho</a>
+    </nav>
+  </header>
+
+  <main class="checkout">
+    <section class="resumo">
+      <h2>Resumo</h2>
+      <ul id="listaResumo"></ul>
+      <h3 id="total">Total: R$ 0,00</h3>
+    </section>
+
+    <section class="form">
+      <form onsubmit="finalizarPedido(event)">
+        <label>Nome completo</label>
+        <input type="text" name="nome" required />
+
+        <label>Endereço</label>
+        <input type="text" name="endereco" required />
+
+        <label>Forma de pagamento</label>
+        <select name="pagamento" required>
+          <option value="">Selecione</option>
+          <option value="PIX">PIX</option>
+          <option value="Boleto Bancário">Boleto Bancário</option>
+          <option value="Cartão de Crédito">Cartão de Crédito</option>
+          <option value="Cartão de Débito">Cartão de Débito</option>
+        </select>
+
+        <button class="btn" type="submit">Confirmar Pedido</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>📞 (11) 99999-9999 · 📧 contato@greenfitstore.com</p>
+  </footer>
+
+  <script>
+    function carregarResumo() {
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      const lista = document.getElementById("listaResumo");
+      const totalEl = document.getElementById("total");
+      lista.innerHTML = "";
+      let total = 0;
+
+      carrinho.forEach(item => {
+        const subtotal = item.qtd * item.preco;
+        total += subtotal;
+        lista.innerHTML += `<li>${item.qtd} × ${item.nome} — R$ ${subtotal.toFixed(2)}</li>`;
+      });
+
+      totalEl.innerText = `Total: R$ ${total.toFixed(2)}`;
+    }
+
+    function finalizarPedido(e) {
+      e.preventDefault();
+      const form = e.target;
+      const pedido = {
+        nome: form.nome.value,
+        endereco: form.endereco.value,
+        pagamento: form.pagamento.value
+      };
+      localStorage.setItem("pedido", JSON.stringify(pedido));
+      window.location.href = "confirmacao.html";
+    }
+
+    carregarResumo();
+  </script>
+</body>
+</html>

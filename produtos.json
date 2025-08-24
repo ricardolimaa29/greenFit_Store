@@ -1,0 +1,5 @@
+[
+  { "id": 1, "nome": "Whey Protein",     "descricao": "Suplemento proteico de alta qualidade.", "preco": 99.90, "categoria": "Suplementos", "imagem": "whey.jpg" },
+  { "id": 2, "nome": "Creatina",          "descricao": "Energia e força para treinos intensos.", "preco": 79.90, "categoria": "Suplementos", "imagem": "creatina.jpg" },
+  { "id": 3, "nome": "Pré-treino",        "descricao": "Foco e disposição para treinar.",        "preco": 89.90, "categoria": "Suplementos", "imagem": "pretreino.jpg" }
+]

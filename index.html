@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>GreenFit Store</title>
+  <link rel="stylesheet" href="static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1> 🛒 GreenFit Store</h1>
+    <nav>
+      <a href="carrinho.html">Carrinho</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <section class="filtros">
+    <form class="filtro-form">
+      <select id="filtroCategoria">
+        <option value="">Todas as categorias</option>
+        <option value="Suplementos">Suplementos</option>
+        <option value="Acessórios">Acessórios</option>
+        <option value="Cosméticos">Cosméticos</option>
+        <option value="Roupas">Roupas</option>
+      </select>
+      <input type="text" id="busca" placeholder="Buscar produtos..." />
+      <button type="button" onclick="carregarProdutos()">Buscar</button>
+      <a class="limpar" href="index.html">Limpar</a>
+    </form>
+  </section>
+
+  <main class="grid" id="listaProdutos"></main>
+
+  <footer>
+    <p>📞 (11) 9994-3456 · 📧 contato@greenfitstore.com</p>
+  </footer>
+
+
+  <script id="produtos-embed" type="application/json">
+  [
+    {
+      "id": 1,
+      "nome": "Whey Protein",
+      "descricao": "Suplemento proteico de alta qualidade.",
+      "preco": 99.90,
+      "categoria": "Suplementos",
+      "imagem": "whey.jpg"
+    },
+    {
+      "id": 2,
+      "nome": "Creatina",
+      "descricao": "Energia e força para treinos intensos.",
+      "preco": 79.90,
+      "categoria": "Suplementos",
+      "imagem": "creatina.jpg"
+    },
+    {
+      "id": 3,
+      "nome": "Pré-treino",
+      "descricao": "Foco e disposição para treinar.",
+      "preco": 89.90,
+      "categoria": "Suplementos",
+      "imagem": "pretreino.jpg"
+    }
+  </script>
+
+  <script>
+    let produtos = [];
+
+    async function carregarProdutos() {
+      
+      try {
+        const resp = await fetch("produtos.json", { cache: "no-store" });
+        if (!resp.ok) throw new Error("Falha ao carregar produtos.json");
+        produtos = await resp.json();
+      } catch (e) {
+        // 2) fallback: ler do <script type="application/json">
+        const embed = document.getElementById("produtos-embed");
+        if (embed?.textContent?.trim()) {
+          produtos = JSON.parse(embed.textContent);
+        } else {
+          console.error("Sem produtos disponíveis:", e);
+          produtos = [];
+        }
+      }
+
+      const categoria = document.getElementById("filtroCategoria").value;
+      const busca = document.getElementById("busca").value.toLowerCase();
+
+      const lista = document.getElementById("listaProdutos");
+      lista.innerHTML = "";
+
+      produtos
+        .filter(p => (!categoria || p.categoria === categoria))
+        .filter(p => !busca || p.nome.toLowerCase().includes(busca))
+        .forEach(p => {
+          const preco = Number(p.preco) || 0;
+          lista.innerHTML += `
+            <div class="card">
+              <img src="static/img/${p.imagem}" alt="${p.nome}" class="produto-img" />
+              <div class="card-body">
+                <h2>${p.nome}</h2>
+                <p class="descricao">${p.descricao || ""}</p>
+                <span class="preco">R$ ${preco.toFixed(2)}</span>
+                <a class="btn" href="carrinho.html" onclick="adicionarCarrinho(${p.id})">Adicionar ao Carrinho</a>
+              </div>
+              <div class="badge">${p.categoria}</div>
+            </div>
+          `;
+        });
+    }
+
+    function adicionarCarrinho(id) {
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      const prod = produtos.find(p => p.id === id);
+      if (!prod) return;
+
+      const existente = carrinho.find(i => i.id === id);
+      if (existente) {
+        existente.qtd += 1;
+      } else {
+        carrinho.push({ ...prod, qtd: 1 });
+      }
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      alert("Produto adicionado ao carrinho!");
+    }
+
+    carregarProdutos();
+  </script>
+</body>
+</html>

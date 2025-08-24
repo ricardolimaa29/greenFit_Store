@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meu Carrinho</title>
+  <link rel="stylesheet" href="static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Meu Carrinho</h1>
+    <nav>
+      <a href="index.html">Continuar comprando</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <main>
+    <table class="tabela" id="tabelaCarrinho">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Qtd</th>
+          <th>Preço</th>
+          <th>Subtotal</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h3 class="total" id="total">Total: R$ 0,00</h3>
+    <p class="acoes-carrinho">
+      <a class="btn outline" href="#" onclick="limparCarrinho()">Esvaziar Carrinho</a>
+      <a class="btn" href="checkout.html">Finalizar Pedido</a>
+    </p>
+  </main>
+
+  <footer>
+    <p>📞 (11) 99999-9999 · 📧 contato@lojasuplementos.com</p>
+  </footer>
+
+  <script>
+    function renderCarrinho() {
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      const tbody = document.querySelector("#tabelaCarrinho tbody");
+      const totalSpan = document.getElementById("total");
+      tbody.innerHTML = "";
+      let total = 0;
+
+      carrinho.forEach((item, i) => {
+        const subtotal = item.preco * item.qtd;
+        total += subtotal;
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.nome}</td>
+            <td>${item.qtd}</td>
+            <td>R$ ${item.preco.toFixed(2)}</td>
+            <td>R$ ${subtotal.toFixed(2)}</td>
+            <td>
+              <a class="btn-sm" href="#" onclick="alterarQtd(${i}, 1)">+1</a>
+              <a class="btn-sm" href="#" onclick="alterarQtd(${i}, -1)">-1</a>
+              <a class="btn-sm danger" href="#" onclick="remover(${i})">Remover</a>
+            </td>
+          </tr>
+        `;
+      });
+
+      totalSpan.innerText = `Total: R$ ${total.toFixed(2)}`;
+    }
+
+    function alterarQtd(i, delta) {
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      carrinho[i].qtd += delta;
+      if (carrinho[i].qtd <= 0) carrinho.splice(i, 1);
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      renderCarrinho();
+    }
+
+    function remover(i) {
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      carrinho.splice(i, 1);
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      renderCarrinho();
+    }
+
+    function limparCarrinho() {
+      localStorage.removeItem("carrinho");
+      renderCarrinho();
+    }
+
+    renderCarrinho();
+  </script>
+</body>
+</html>
